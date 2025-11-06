@@ -1,7 +1,18 @@
+"use client";
 import Image from "next/image";
 import { Star } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { usePhotographerStore } from "../store/photographerStore";
 
 export default function PhotographerCard({ photographer }) {
+  const router = useRouter();
+  const { setSelectedPhotographer } = usePhotographerStore();
+
+  const handleViewProfile = () => {
+    setSelectedPhotographer(photographer);
+    router.push("/photographer-profile");
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition p-5">
       <div className="relative w-full h-56 rounded-xl overflow-hidden">
@@ -30,8 +41,9 @@ export default function PhotographerCard({ photographer }) {
             </span>
           </div>
         </div>
+
         <div className="flex flex-wrap gap-2 mt-2">
-          {photographer.tags.map((tag, i) => (
+          {photographer.tags?.map((tag, i) => (
             <span
               key={i}
               className="bg-pink-100 text-pink-700 text-xs font-medium px-2 py-1 rounded-full"
@@ -40,7 +52,11 @@ export default function PhotographerCard({ photographer }) {
             </span>
           ))}
         </div>
-        <button className="mt-4 w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-full font-medium">
+
+        <button
+          onClick={handleViewProfile}
+          className="mt-4 w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-full font-medium transition"
+        >
           View Profile
         </button>
       </div>
